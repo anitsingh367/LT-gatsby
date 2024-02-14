@@ -1,0 +1,51 @@
+@import "../../styles/global.scss";
+.event-card:first-child {
+  .MuiTypography-h6 {
+    font-size: 2.25rem;
+  }
+  .MuiTypography-body2 {
+    font-size: 1.25rem;
+  }
+  .MuiChip-label {
+    font-size: 1.25rem;
+  }
+  .MuiButton-text {
+    font-size: 1.25rem;
+  }
+  .MuiSvgIcon-fontSizeMedium {
+    font-size: 2rem;
+  }
+}
+.cardImg img{
+  aspect-ratio: 4 / 3 !important;
+  min-width: 320px !important;
+  @media screen and (max-width:420px){
+      min-width: 0 !important;
+  }
+}
+@media (max-width:#{$screen-md}) {
+  .event-card:first-child {
+    .MuiTypography-h6 {
+      font-size: 2rem;
+    }
+    .MuiTypography-body2 {
+      font-size: 0.875rem;
+    }
+    .MuiChip-label {
+      font-size: 0.875rem;
+    }
+    .MuiButton-text {
+      font-size: 0.875rem;
+    }
+    .MuiSvgIcon-fontSizeMedium {
+      font-size: 1.5rem;
+    }
+  }
+}
+@media (max-width:#{$screen-sm}) {
+  .event-card:first-child {
+    .MuiTypography-h6 {
+      font-size: 1.25rem;
+    }
+  }
+}

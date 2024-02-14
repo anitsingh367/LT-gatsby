@@ -1,0 +1,38 @@
+.volunteer-parent .swiper-container {
+    position: relative;
+    --gradient-color: rgb(232, 234, 236), rgba(248, 251, 253, 0);
+    --gradient-width: 20%;
+  }
+  
+  .volunteer-parent .swiper-container::after,
+  .volunteer-parent .swiper-container::before {
+    background: linear-gradient(to right, var(--gradient-color));
+    content: "";
+    height: 100%;
+    position: absolute;
+    width: var(--gradient-width);
+    z-index: 2;
+  }
+  
+  .volunteer-parent .swiper-container::after {
+    right: 0;
+    top: 0;
+    transform: rotateZ(180deg);
+  }
+  .volunteer-parent .swiper-container::before {
+    left: 0;
+    top: 0;
+  }
+  
+  .volunteer-parent .swiper-slide {
+    overflow: hidden;
+    background-position: center center;
+    background-size: cover;
+    margin: 0;
+    background: transparent;
+  }
+  
+  .volunteer-parent .swiper-slide img {
+    width: 100px;
+    height: 100px;
+  }
