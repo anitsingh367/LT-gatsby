@@ -32,7 +32,7 @@ export const wrapPageElement = ({ element }: { element: React.ReactNode }) => {
   });
   return (
     <ThemeProvider theme={theme}>
-      <Layout>{element}</Layout>
+      <>{element}</>
     </ThemeProvider>
   );
 };
