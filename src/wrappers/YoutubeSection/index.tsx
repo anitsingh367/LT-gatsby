@@ -16,7 +16,6 @@ import SkeletonCard from "../../components/skeleton/index";
 let skeletonCards = Array(3).fill(0);
 
 const YoutbeVideo = () => {
-
   const rapidAPIKey = process.env.GATSBY_YOUTUBE_API_KEY;
   const rapidAPIHost = process.env.GATSBY_YOUTUBE_API_HOST;
   const [fetchVideo, setfetchVideo] = useState(null);
@@ -25,7 +24,7 @@ const YoutbeVideo = () => {
   // const [topic, setTopic] = useState("");
   // const [time, setTime] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [page, setPage] = useState(0)
+  const [page, setPage] = useState(0);
   const youtubeAPI = `https://youtube-v31.p.rapidapi.com/search?channelId=UCCEo6AtbAMYTNb0dedyz54A&part=snippet%2Cid&order=date&maxResults=12&page=${page}`;
 
   // const handleChangeLanguage = (event) => {
@@ -38,9 +37,9 @@ const YoutbeVideo = () => {
   //   setTime(event.target.value);
   // };
 
-  const handlePageChange = (event, values)=>{
-    setPage(values)
-  }
+  const handlePageChange = (event, values) => {
+    setPage(values);
+  };
   useEffect(() => {
     // const options = {
     //   method: "GET",
@@ -50,13 +49,13 @@ const YoutbeVideo = () => {
     //   },
     // };
     const options = {
-        method: 'GET',
-        url: 'https://youtube-v31.p.rapidapi.com/search',
-        headers: {
-            'X-RapidAPI-Key': '18458c0a04msh10c0a0f99cd0268p1acdbejsn9ebc33d70081',
-            'X-RapidAPI-Host': 'youtube-v31.p.rapidapi.com'
-        }
-      };
+      method: "GET",
+      url: "https://youtube-v31.p.rapidapi.com/search",
+      headers: {
+        "X-RapidAPI-Key": "18458c0a04msh10c0a0f99cd0268p1acdbejsn9ebc33d70081",
+        "X-RapidAPI-Host": "youtube-v31.p.rapidapi.com",
+      },
+    };
     setIsLoading(true);
     const fetchVideo = async () => {
       const response = await fetch(youtubeAPI, options);
@@ -213,7 +212,7 @@ const YoutbeVideo = () => {
           </FormControl> */}
         </Box>
       </Container>
-      {!isLoading && (
+      {!isLoading ? (
         <Container
           sx={{
             display: "flex",
@@ -268,8 +267,7 @@ const YoutbeVideo = () => {
               })
           )}
         </Container>
-      )}
-      {isLoading && (
+      ) : (
         <Container
           sx={{
             display: "flex",
@@ -282,27 +280,32 @@ const YoutbeVideo = () => {
           <CircularProgress color="inherit" />
         </Container>
       )}
-      <Pagination count={10} color="primary" size="large" onChange={handlePageChange} />
+      <Pagination
+        count={10}
+        color="primary"
+        size="large"
+        onChange={handlePageChange}
+      />
     </Container>
   );
 };
 
 YoutbeVideo.propTypes = {
-    //=======================================
-    // Component Specific props
-    //=======================================
-    content: PropTypes.arrayOf(
-      PropTypes.shape({
-        image: PropTypes.string,
-        heading: PropTypes.string,
-        description: PropTypes.string,
-        primaryBtn: PropTypes.shape({
-          btnIcon: PropTypes.object,
-          btnText: PropTypes.string,
-          onClick: PropTypes.func,
-        }),
-      })
-    ),
-  };
+  //=======================================
+  // Component Specific props
+  //=======================================
+  content: PropTypes.arrayOf(
+    PropTypes.shape({
+      image: PropTypes.string,
+      heading: PropTypes.string,
+      description: PropTypes.string,
+      primaryBtn: PropTypes.shape({
+        btnIcon: PropTypes.object,
+        btnText: PropTypes.string,
+        onClick: PropTypes.func,
+      }),
+    })
+  ),
+};
 
 export default YoutbeVideo;
