@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import React from "react";
-import { getHomePageVideo } from "../../firebase";
+import { getHomePageVideo } from "../../../firebase";
 
 const Video = () => {
   const [video, setVideo] = useState(null);
