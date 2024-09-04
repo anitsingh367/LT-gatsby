@@ -10,11 +10,9 @@ import logo from "../assets/Logo.png";
 import vision from "../assets/vision.png";
 import React from "react";
 import profilePhoto from "../assets/veerji-profile-photo.png";
-import Layout from "../components/Layout";
 
 const About = () => {
   return (
-    <Layout>
       <Container maxWidth={false} disableGutters>
         <Typography
           variant="h4"
@@ -242,7 +240,7 @@ const About = () => {
           </Box> */}
         </Container>
       </Container>
-    </Layout>
+ 
   );
 };
 

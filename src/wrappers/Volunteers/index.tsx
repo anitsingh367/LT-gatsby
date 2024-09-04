@@ -60,7 +60,7 @@ const Volunteers = () => {
             return (
               <SwiperSlide
                 key={index}
-                sx={{
+                style={{
                   display: "flex",
                   flexDirection: "column",
                 }}
