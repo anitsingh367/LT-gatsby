@@ -1,5 +1,4 @@
 import React from "react";
-import Layout from "../components/Layout";
 import { ThemeProvider, createTheme } from "@mui/material";
 
 export const wrapPageElement = ({ element }: { element: React.ReactNode }) => {

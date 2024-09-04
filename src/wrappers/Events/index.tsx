@@ -1,43 +1,18 @@
 // Import npm packages
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
 import moment from "moment";
-import useHashRouteToggle from "../../customHooks/";
 import { Link } from "gatsby";
-// Import other packages
 import { Button, Typography, Container, Box } from "@mui/material";
-import {
-  // Share as ShareIcon,
-  FiberManualRecord as LiveDot,
-} from "@mui/icons-material";
+import { FiberManualRecord as LiveDot } from "@mui/icons-material";
 
-import CustomCard from "../../components/card/Card";
-import EventModal from "../../components/eventModal";
-import SkeletonCard from "../../components/skeleton";
-import "./index.scss";
+import CustomCard from "../../components/Card";
+import EventModal from "../../components/EventModal";
+import SkeletonCard from "../../components/Skeleton";
 
 import { getEventDetails } from "../../firebase";
+import { useHashRouteToggle } from "../../utils";
 
-Events.propTypes = {
-  //=======================================
-  // Component Specific props
-  //=======================================
-  content: PropTypes.arrayOf(
-    PropTypes.shape({
-      image: PropTypes.string,
-      heading: PropTypes.string,
-      description: PropTypes.string,
-    })
-  ),
-};
-
-Events.defaultProps = {
-  //=======================================
-  // Component Specific props
-  //=======================================
-};
-
-export default function Events(props) {
+export default function Events() {
   const statusColor = {
     live: "#ED0000",
     upcoming: "#388E3C",
@@ -46,60 +21,58 @@ export default function Events(props) {
 
   const [eventDetails, setEventDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     getEventDetails().then((data) => {
       setEventDetails(data);
       setIsLoading(false);
     });
   }, []);
+
   const currentDate = new Date();
   const newEventList = eventDetails
-    ?.sort((a, b) => {
-      let aDate = new Date(a.date?.startDate);
-      let bDate = new Date(b.date?.startDate);
-      let aEndDate = new Date(a.date?.endDate);
-      let bEndDate = new Date(b.date?.endDate);
+    .sort((a, b) => {
+      const aDate = new Date(a.date.startDate);
+      const bDate = new Date(b.date.startDate);
+      const aEndDate = new Date(a.date.endDate);
+      const bEndDate = new Date(b.date.endDate);
 
-      if (aDate < currentDate && aEndDate > currentDate) {
-        return -1;
-      } else if (bDate < currentDate && bEndDate > currentDate) {
-        return 1;
-      } else if (aDate > currentDate && bDate > currentDate) {
-        return aDate - bDate;
-      } else {
-        return bEndDate - aEndDate;
-      }
+      if (aDate < currentDate && aEndDate > currentDate) return -1;
+      if (bDate < currentDate && bEndDate > currentDate) return 1;
+      if (aDate > currentDate && bDate > currentDate)
+        return aDate.getTime() - bDate.getTime();
+      return bEndDate.getTime() - aEndDate.getTime();
     })
-    .map((items) => {
-      const startDate = items.date?.startDate;
-      const endDate = items.date?.endDate;
+    .map((item) => {
+      const startDate = item.date.startDate;
+      const endDate = item.date.endDate;
 
       if (moment().isBetween(startDate, endDate)) {
-        items["chipTemplate"] = {
+        item.chipTemplate = {
           icon: LiveDot,
           chipText: "Live",
           textColor: statusColor.live,
           iconColor: statusColor.live,
         };
       } else if (moment().isBefore(startDate)) {
-        items["chipTemplate"] = {
+        item.chipTemplate = {
           chipText: "Upcoming",
           textColor: statusColor.upcoming,
         };
       } else if (moment().isAfter(endDate)) {
-        items["chipTemplate"] = {
+        item.chipTemplate = {
           chipText: "Finished",
           textColor: statusColor.finished,
         };
       }
 
-      return items;
+      return item;
     });
 
-  const [openEventModal, setOpenEventModal] = useHashRouteToggle("event"); //useHasRouteToggle is used for controlling browser back button
+  const [openEventModal, setOpenEventModal] = useHashRouteToggle("event");
   const [selectedEvent, setSelectedEvent] = useState({
     heading: "",
-    status: "",
+    status: "" as "" | "upcoming" | "live" | "finished",
     description: "",
     type: "",
     mapUrl: "",
@@ -117,38 +90,32 @@ export default function Events(props) {
       youtubeUrl: selectedData.youtubeUrl,
     });
   };
-  //Skeleton Loader initial state
-  let skeletonCards = Array(4).fill(0);
+
+  const skeletonCards = Array(4).fill(0);
+
   return (
     <Box
       component="section"
       display="flex"
       flexDirection="column"
       alignItems="center"
-      py={2}
-    >
+      py={2}>
       <EventModal
         isOpen={openEventModal}
-        onClose={(value) => setOpenEventModal(value)}
+        onClose={setOpenEventModal}
         heading={selectedEvent.heading}
         status={selectedEvent.status}
         description={selectedEvent.description}
         type={selectedEvent.type}
         mapUrl={selectedEvent.mapUrl}
         youtubeUrl={selectedEvent.youtubeUrl}
-        onSubmit={(value) => {
-          setOpenEventModal(value);
-        }}
+        onSubmit={() => setOpenEventModal(false)}
       />
       <Typography
         variant="h4"
         align="center"
         mb={2}
-        sx={{
-          textTransform: "uppercase",
-          fontWeight: "bold",
-        }}
-      >
+        sx={{ textTransform: "uppercase", fontWeight: "bold" }}>
         <Box component="span" color="primary.main">
           events
         </Box>{" "}
@@ -162,28 +129,21 @@ export default function Events(props) {
           alignItems: "center",
           justifyContent: "space-evenly",
           gap: 2,
-        }}
-      >
+        }}>
         {isLoading ? (
-          skeletonCards.map((item) => {
-            return <SkeletonCard />;
-          })
+          skeletonCards.map((_, index) => <SkeletonCard key={index} />)
         ) : newEventList.length === 0 ? (
           <Typography>Oops! No Data found</Typography>
         ) : (
           newEventList
-            ?.slice(0, 4)
-            .filter((items) => {
-              return items.chipTemplate.chipText !== "Finished";
-            })
-            .map((items, index) => {
-              const startDate = items.date?.startDate;
-              const endDate = items.date?.endDate;
+            .slice(0, 4)
+            .filter((item) => item.chipTemplate.chipText !== "Finished")
+            .map((item, index) => {
+              const startDate = item.date.startDate;
+              const endDate = item.date.endDate;
               const readableStartDate = moment(startDate).format("llll");
-              const readbleEndDate = moment(endDate).format("h:mm A");
-              const description =
-                items.description +
-                `. Session will be on ${readableStartDate}- ${readbleEndDate}`;
+              const readableEndDate = moment(endDate).format("h:mm A");
+              const description = `${item.description}. Session will be on ${readableStartDate} - ${readableEndDate}`;
               return (
                 <Box
                   sx={{
@@ -193,27 +153,23 @@ export default function Events(props) {
                     width: "100%",
                     maxWidth: "280px",
                   }}
-                  key={index}
-                >
+                  key={index}>
                   <CustomCard
-                    content={{
-                      image: items.imageUrl,
-                      heading: items.title,
-                      ...items,
-                      description: description,
-                      type: items.type,
-                      primaryBtn: {
-                        btnText: "View Details",
-                        onClick: () => {
-                          handleEventCard({
-                            heading: items.title,
-                            status: items.chipTemplate.chipText?.toLowerCase(),
-                            description: description,
-                            type: items.type,
-                            mapUrl: items.mapUrl,
-                            youtubeUrl: items.youtubeUrl,
-                          });
-                        },
+                    image={item.imageUrl}
+                    heading={item.title}
+                    description={description}
+                    type={item.type}
+                    primaryBtn={{
+                      btnText: "View Details",
+                      onClick: () => {
+                        handleEventCard({
+                          heading: item.title,
+                          status: item.chipTemplate.chipText.toLowerCase(),
+                          description: description,
+                          type: item.type,
+                          mapUrl: item.mapUrl,
+                          youtubeUrl: item.youtubeUrl,
+                        });
                       },
                     }}
                   />
@@ -223,7 +179,7 @@ export default function Events(props) {
         )}
       </Container>
 
-      {newEventList && newEventList?.length > 0 && (
+      {newEventList.length > 0 && (
         <Link to="/events" className="link">
           <Button variant="contained" color="primary" sx={{ mt: 2 }}>
             View All

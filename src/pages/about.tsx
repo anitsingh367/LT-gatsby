@@ -6,10 +6,10 @@ import {
   ListItem,
   ListItemText,
 } from "@mui/material";
-import logo from "../images/Logo.png";
-import vision from "../images/vision.png";
+import logo from "../assets/Logo.png";
+import vision from "../assets/vision.png";
 import React from "react";
-import profilePhoto from "../images/veerji-profile-photo.png";
+import profilePhoto from "../assets/veerji-profile-photo.png";
 import Layout from "../components/Layout";
 
 const About = () => {
@@ -23,8 +23,7 @@ const About = () => {
             padding: "4rem",
             textTransform: "uppercase",
             fontWeight: "bold",
-          }}
-        >
+          }}>
           <span style={{ color: "var(--primary-color)" }}>About</span> Us
         </Typography>
         <Container
@@ -33,8 +32,7 @@ const About = () => {
             display: "flex",
             flexDirection: "column",
             gap: "4rem",
-          }}
-        >
+          }}>
           <Box
             sx={{
               display: "flex",
@@ -48,8 +46,7 @@ const About = () => {
                 xs: "column",
               },
               width: "100%",
-            }}
-          >
+            }}>
             <Box
               sx={{
                 width: {
@@ -58,15 +55,13 @@ const About = () => {
                   sm: "100%",
                   xs: "100%",
                 },
-              }}
-            >
+              }}>
               <img src={profilePhoto} alt="img" width="100%" />
             </Box>
             <Box
               sx={{
                 width: "100%",
-              }}
-            >
+              }}>
               <Typography variant="h4" gutterBottom>
                 About The Living Treasure
               </Typography>
@@ -79,16 +74,14 @@ const About = () => {
                 <ListItem disablePadding sx={{ display: "list-item" }}>
                   <ListItemText
                     sx={{ margin: 0 }}
-                    primary="Personality Development through Self-Evaluation."
-                  ></ListItemText>
+                    primary="Personality Development through Self-Evaluation."></ListItemText>
                 </ListItem>
                 <ListItem disablePadding sx={{ display: "list-item" }}>
                   <ListItemText
                     sx={{ margin: 0 }}
                     primary="Helping the needy, less privileged brethren of our society,
                     by providing them with the basic services without any
-                    discrimination of religion, caste and creed."
-                  ></ListItemText>
+                    discrimination of religion, caste and creed."></ListItemText>
                 </ListItem>
               </List>
 
@@ -99,29 +92,25 @@ const About = () => {
                 <ListItem disablePadding sx={{ display: "list-item" }}>
                   <ListItemText
                     sx={{ margin: 0 }}
-                    primary="Mind Elevation Programmes."
-                  ></ListItemText>
+                    primary="Mind Elevation Programmes."></ListItemText>
                 </ListItem>
                 <ListItem disablePadding sx={{ display: "list-item" }}>
                   <ListItemText
                     sx={{ margin: 0 }}
                     primary="Public seminars, workshops, discourses and other programmes
-                      for Self-Development, Growth and Self- Transformation."
-                  ></ListItemText>
+                      for Self-Development, Growth and Self- Transformation."></ListItemText>
                 </ListItem>
                 <ListItem disablePadding sx={{ display: "list-item" }}>
                   <ListItemText
                     sx={{ margin: 0 }}
                     primary="Providing FREE basic medical, educational facilities and all
-                      types of counseling services."
-                  ></ListItemText>
+                      types of counseling services."></ListItemText>
                 </ListItem>
                 <ListItem disablePadding sx={{ display: "list-item" }}>
                   <ListItemText
                     sx={{ margin: 0 }}
                     primary="Camps for blood donation, vaccination and diagnostic
-                      investigations, etc."
-                  ></ListItemText>
+                      investigations, etc."></ListItemText>
                 </ListItem>
               </List>
             </Box>
@@ -139,8 +128,7 @@ const About = () => {
                 xs: "column",
               },
               width: "100%",
-            }}
-          >
+            }}>
             <Box
               sx={{
                 width: {
@@ -149,15 +137,13 @@ const About = () => {
                   sm: "100%",
                   xs: "100%",
                 },
-              }}
-            >
+              }}>
               <img src={logo} alt="img" width="100%" />
             </Box>
             <Box
               sx={{
                 width: "100%",
-              }}
-            >
+              }}>
               <Typography variant="h4" gutterBottom>
                 About the Logo
               </Typography>
@@ -198,8 +184,7 @@ const About = () => {
                   flexDirection: "column",
                   textAlign: "center",
                   fontWeight: "bold",
-                }}
-              >
+                }}>
                 "AAD SACH JUGAADH SACH HAI BI SACH NANAK HOSI BHI SACH".
               </Typography>
               <Typography variant="body1">
@@ -212,7 +197,7 @@ const About = () => {
               </Typography>
             </Box>
           </Box>
-          <Box
+          {/* <Box
             sx={{
               display: "flex",
               gap: { lg: "4rem", md: "2rem", sm: "1rem", xs: "0.5rem" },
@@ -225,8 +210,7 @@ const About = () => {
                 xs: "column",
               },
               width: "100%",
-            }}
-          >
+            }}>
             <Box
               sx={{
                 width: {
@@ -235,15 +219,13 @@ const About = () => {
                   sm: "100%",
                   xs: "100%",
                 },
-              }}
-            >
+              }}>
               <img src={vision} alt="img" width="100%" />
             </Box>
             <Box
               sx={{
                 width: "100%",
-              }}
-            >
+              }}>
               <Typography variant="h4" gutterBottom>
                 Our Vision , Mission
               </Typography>
@@ -257,7 +239,7 @@ const About = () => {
                 hendrerit ultrices mauris.
               </Typography>
             </Box>
-          </Box>
+          </Box> */}
         </Container>
       </Container>
     </Layout>
