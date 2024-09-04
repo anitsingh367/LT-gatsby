@@ -7,7 +7,7 @@ import { Container, Typography, Avatar, Box } from "@mui/material";
 // Import Swiper styles
 import "swiper/css";
 import "./index.scss";
-import volunteerData from "../../../data/index";
+import volunteerData from "../../data/index";
 
 const Volunteers = () => {
   return (
@@ -60,7 +60,7 @@ const Volunteers = () => {
             return (
               <SwiperSlide
                 key={index}
-                sx={{
+                style={{
                   display: "flex",
                   flexDirection: "column",
                 }}

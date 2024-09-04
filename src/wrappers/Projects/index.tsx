@@ -2,7 +2,7 @@
 import React from 'react'
 import { Typography, Container, ButtonBase } from "@mui/material";
 import PropTypes from "prop-types";
-import CustomCard from "../../../components/card/Card";
+import CustomCard from "../../components/card/Card";
 import { Box } from "@mui/system";
 import { navigate} from "gatsby";
 

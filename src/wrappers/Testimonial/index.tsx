@@ -4,7 +4,7 @@ import  {Swiper,SwiperSlide } from "swiper/react";
 // import "swiper/css";
 // import "swiper/css/pagination";
 // import "swiper/css/navigation";
-import testimonialData from "../../../data/testimonial";
+import testimonialData from "../../data/testimonial";
 import Typography from "@mui/material/Typography";
 import { Container, Divider, Box } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
