@@ -15,12 +15,7 @@ import {
 
 import defaultImage from "../../assets/default-card-image.jpg";
 import { CustomCardProps } from "../../interfaces/CustomCard";
-
-function extractContent(html: string): string {
-  const div = document.createElement("div");
-  div.innerHTML = html;
-  return div.textContent || div.innerText || "";
-}
+import { extractContent } from "../../utils";
 
 export default function CustomCard({
   image,

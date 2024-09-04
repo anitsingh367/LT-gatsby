@@ -44,3 +44,7 @@ export const getMapUrl = (iFrame) => {
 
   return !!src?.length ? src[1] : defaultUrl;
 };
+
+export const extractContent = (html: string): string => {
+  return html.replace(/<[^>]*>/g, "");
+};

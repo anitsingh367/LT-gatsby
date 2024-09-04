@@ -43,6 +43,7 @@ import { db } from "../../firebase";
 import { EventModalProps } from "../../interfaces/EventModal";
 import "./index.scss";
 import { TransitionProps } from "@mui/material/transitions";
+import { extractContent } from "./../../utils/index";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -174,7 +175,7 @@ export default function EventModal({
             }}>
             <ListItemText
               primary={`${heading} (${type?.toUpperCase()} EVENT)`}
-              secondary={description}
+              secondary={extractContent(description)}
               sx={{
                 flex: { lg: 3, md: 2, sm: "unset", xs: "unset" },
               }}
