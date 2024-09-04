@@ -268,6 +268,12 @@ const EventPages: React.FC<EventPagesProps> = (props) => {
                     image={items.imageUrl}
                     heading={items.title}
                     description={description}
+                    chipTemplate={{
+                      chipText: items.chipTemplate?.chipText,
+                      textColor: items.chipTemplate?.textColor,
+                      icon: items.chipTemplate?.icon,
+                      iconColor: items.chipTemplate?.iconColor,
+                    }}
                     primaryBtn={{
                       btnText: "View Details",
                       onClick: () => {
