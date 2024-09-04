@@ -2,9 +2,9 @@ import { SvgIconComponent } from "@mui/icons-material";
 
 // Sub-interface for the ChipTemplate
 export interface ChipTemplate {
-  icon: SvgIconComponent;
+  icon?: SvgIconComponent;
   chipText: string;
-  iconColor: string;
+  iconColor?: string;
   textColor: string;
 }
 
