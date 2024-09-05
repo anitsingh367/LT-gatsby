@@ -4,7 +4,7 @@ export interface EventModalProps {
   //=======================================
   heading?: string;
   description?: string;
-  status?: "Upcoming" | "Live" | "Finished" | ""; // Added empty string for warnings handling
+  status?: "upcoming" | "live" | "finished" | ""; // Added empty string for warnings handling
   onClick?: () => void;
   isOpen?: boolean;
   type: string;

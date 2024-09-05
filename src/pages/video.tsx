@@ -52,7 +52,7 @@ const YoutbeVideo: React.FC<VideoProps> = () => {
         const response = await fetch(youtubeAPI, options);
         const data = await response.json();
         setFetchVideo(data.items);
-        console.log(data.items);
+        console.log(data.items, process.env.NODE_ENV);
       } catch (error) {
         console.error("Error fetching video data:", error);
       } finally {

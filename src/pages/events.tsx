@@ -22,7 +22,7 @@ interface Event {
   description: string;
   chipTemplate?: {
     icon?: typeof LiveDot;
-    chipText: "Upcoming" | "Live" | "Finished" | "";
+    chipText: "upcoming" | "live" | "finished" | "";
     textColor: string;
     iconColor?: string;
   };
@@ -41,7 +41,7 @@ interface Event {
     startDate: string;
     endDate: string;
   };
-  status?: "Upcoming" | "Live" | "Finished" | "";
+  status?: "upcoming" | "live" | "finished" | "";
   type?: string;
   mapUrl?: string;
   youtubeUrl?: string;
@@ -119,23 +119,23 @@ const EventPages: React.FC<EventPagesProps> = (props) => {
     if (moment().isBetween(startDate, endDate)) {
       items.chipTemplate = {
         icon: LiveDot,
-        chipText: "Live",
+        chipText: "live",
         textColor: statusColor.live,
         iconColor: statusColor.live,
       };
-      items.status = "Live";
+      items.status = "live";
     } else if (moment().isBefore(startDate)) {
       items.chipTemplate = {
-        chipText: "Upcoming",
+        chipText: "upcoming",
         textColor: statusColor.upcoming,
       };
-      items.status = "Upcoming";
+      items.status = "upcoming";
     } else if (moment().isAfter(endDate)) {
       items.chipTemplate = {
-        chipText: "Finished",
+        chipText: "finished",
         textColor: statusColor.finished,
       };
-      items.status = "Finished";
+      items.status = "finished";
     }
 
     return items;
@@ -276,9 +276,9 @@ const EventPages: React.FC<EventPagesProps> = (props) => {
                           heading: items.title,
                           status:
                             items.chipTemplate?.chipText?.toLowerCase() as
-                              | "Upcoming"
-                              | "Live"
-                              | "Finished"
+                              | "upcoming"
+                              | "live"
+                              | "finished"
                               | "",
                           description: description,
                           type: items.type,
