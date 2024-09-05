@@ -8,7 +8,7 @@ export interface EventModalProps {
   onClick?: () => void;
   isOpen?: boolean;
   type: string;
-  onSubmit?: () => void;
+  onSubmit?: (bool: boolean) => void;
   mapUrl?: string;
   youtubeUrl?: string;
   onClose?: (value: boolean) => void;

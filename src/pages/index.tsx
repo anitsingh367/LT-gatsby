@@ -9,13 +9,13 @@ import Testimonial from "../wrappers/Testimonial";
 
 const IndexPage = (props: any) => {
   return (
-    <Layout>
+    <>
       <Video />
       <Events />
       <Projects />
       <Testimonial />
       <Volunteers />
-    </Layout>
+    </>
   );
 };
 export default IndexPage;

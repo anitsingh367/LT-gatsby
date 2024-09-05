@@ -139,6 +139,7 @@ export default function Events() {
             .slice(0, 4)
             .filter((item) => item.chipTemplate.chipText !== "Finished")
             .map((item, index) => {
+              console.log("item", item);
               const startDate = item.date.startDate;
               const endDate = item.date.endDate;
               const readableStartDate = moment(startDate).format("llll");
@@ -159,6 +160,7 @@ export default function Events() {
                     heading={item.title}
                     description={description}
                     type={item.type}
+                    chipTemplate={item.chipTemplate}
                     primaryBtn={{
                       btnText: "View Details",
                       onClick: () => {
