@@ -72,7 +72,7 @@ export default function Events() {
   const [openEventModal, setOpenEventModal] = useHashRouteToggle("event");
   const [selectedEvent, setSelectedEvent] = useState({
     heading: "",
-    status: "" as "" | "Upcoming" | "Live" | "Finished",
+    status: "" as "" | "upcoming" | "live" | "finished",
     description: "",
     type: "",
     mapUrl: "",
