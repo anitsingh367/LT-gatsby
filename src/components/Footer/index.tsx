@@ -16,6 +16,8 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import { Link } from "gatsby";
 import { getEventDetails } from "../../firebase";
 import moment from "moment";
+import { useHashRouteToggle } from "../../utils";
+import EventModal from "../EventModal";
 
 const Footer = () => {
   const [eventTitle, setEventTitle] = useState([]);
@@ -63,7 +65,28 @@ const Footer = () => {
   const homePageEventList = newEventList
     .slice(0, 4)
     .filter((item) => item.chipTemplate.chipText !== "Finished");
-  console.log("supp", homePageEventList);
+
+  const [openEventModal, setOpenEventModal] = useHashRouteToggle("event");
+  const [selectedEvent, setSelectedEvent] = useState({
+    heading: "",
+    status: "" as "" | "upcoming" | "live" | "finished",
+    description: "",
+    type: "",
+    mapUrl: "",
+    youtubeUrl: "",
+  });
+
+  const handleEventCard = (selectedData) => {
+    setOpenEventModal(true);
+    setSelectedEvent({
+      heading: selectedData.heading,
+      status: selectedData.status,
+      description: selectedData.description,
+      type: selectedData.type,
+      mapUrl: selectedData.mapUrl,
+      youtubeUrl: selectedData.youtubeUrl,
+    });
+  };
   return (
     <>
       <Box
@@ -72,6 +95,17 @@ const Footer = () => {
           backgroundColor: "secondary.main",
         }}
       >
+        <EventModal
+          isOpen={openEventModal}
+          onClose={setOpenEventModal}
+          heading={selectedEvent.heading}
+          status={selectedEvent.status}
+          description={selectedEvent.description}
+          type={selectedEvent.type}
+          mapUrl={selectedEvent.mapUrl}
+          youtubeUrl={selectedEvent.youtubeUrl}
+          onSubmit={() => setOpenEventModal(false)}
+        />
         <Container
           sx={{
             display: "flex",
@@ -155,8 +189,26 @@ const Footer = () => {
               </Typography>
             ) : (
               homePageEventList.slice(0, 5)?.map((item, index) => {
+                const startDate = item.date.startDate;
+                const endDate = item.date.endDate;
+                const readableStartDate = moment(startDate).format("llll");
+                const readableEndDate = moment(endDate).format("h:mm A");
+                const description = `${item.description}. Session will be on ${readableStartDate} - ${readableEndDate}`;
                 return (
-                  <div key={index}>
+                  <Box
+                    key={index}
+                    sx={{ cursor: "pointer" }}
+                    onClick={() => {
+                      handleEventCard({
+                        heading: item.title,
+                        status: item.chipTemplate.chipText.toLowerCase(),
+                        description: description,
+                        type: item.type,
+                        mapUrl: item.mapUrl,
+                        youtubeUrl: item.youtubeUrl,
+                      });
+                    }}
+                  >
                     <ListItem
                       disableGutters
                       disablePadding
@@ -164,7 +216,7 @@ const Footer = () => {
                     >
                       <ListItemText>{item.title}</ListItemText>
                     </ListItem>
-                  </div>
+                  </Box>
                 );
               })
             )}
