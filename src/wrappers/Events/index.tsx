@@ -139,9 +139,9 @@ export default function Events() {
         {isLoading ? (
           skeletonCards.map((_, index) => <SkeletonCard key={index} />)
         ) : newEventList.length === 0 ? (
-          <Typography>Oops! No Data found</Typography>
+          <Typography textAlign="center">Oops! No Data found</Typography>
         ) : homePageEventList.length === 0 ? (
-          <Typography>
+          <Typography textAlign="center">
             There are no upcoming events at the moment. Stay tuned for future
             announcements!
           </Typography>
