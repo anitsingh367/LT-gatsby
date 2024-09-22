@@ -9,13 +9,13 @@ import { query, getDocs } from "firebase/firestore";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyDepPL5be3Xw54rJJQoRG8Jxd0zJX9pRLY",
+  apiKey: process.env.GATSBY_FIREBASE_API_KEY,
   authDomain: "the-living-treasure-7c43e.firebaseapp.com",
   projectId: "the-living-treasure-7c43e",
   storageBucket: "the-living-treasure-7c43e.appspot.com",
-  messagingSenderId: "187990294487",
-  appId: "1:187990294487:web:6a5228a048239dd21b5592",
-  measurementId: "G-EL57Q96HYG",
+  messagingSenderId: process.env.GATSBY_FIREBASE_MESSENGER_ID,
+  appId: process.env.GATSBY_FIREBASE_APP_ID,
+  measurementId: process.env.GATSBY_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase

@@ -1,4 +1,15 @@
+# Node modules
 node_modules/
+
+# Cache directories
 .cache/
+
+# Build output
 public
+
+# TypeScript declaration files
 src/gatsby-types.d.ts
+
+# Environment variables
+.env.development
+.env.production
