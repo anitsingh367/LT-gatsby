@@ -1,0 +1,82 @@
+backend:
+  name: git-gateway
+  repo: anitsingh367/LT-gatsby
+  branch: cms
+
+media_folder: static/assets
+public_folder: /assets
+
+collections:
+  - label: "Events"
+    name: "events"
+    folder: "src/events/"
+    file: "{{title}}"
+    create: true
+    fields:
+      - { label: "Category", name: "category", widget: "string" }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - label: "Start time"
+        name: "start"
+        widget: "datetime"
+        default: ""
+        date_format: "DD.MM.YYYY"
+        time_format: "HH:mm"
+        format: "LLL"
+        picker_utc: false
+      - label: "End time"
+        name: "end"
+        widget: "datetime"
+        default: ""
+        date_format: "DD.MM.YYYY"
+        time_format: "HH:mm"
+        format: "LLL"
+        picker_utc: false
+      - label: "Status"
+        name: "status"
+        widget: "select"
+        options: ["Online", "Offline"]
+      - label: "Image"
+        name: "image"
+        widget: "image"
+        choose_url: true
+        media_library:
+          config:
+            multiple: true
+
+  - label: "Projects"
+    name: "projects"
+    folder: "src/events/"
+    file: "{{title}}"
+    create: true
+    fields:
+      - { label: "Category", name: "category", widget: "string" }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - label: "Start time"
+        name: "start"
+        widget: "datetime"
+        default: ""
+        date_format: "DD.MM.YYYY"
+        time_format: "HH:mm"
+        format: "LLL"
+        picker_utc: false
+      - label: "End time"
+        name: "end"
+        widget: "datetime"
+        default: ""
+        date_format: "DD.MM.YYYY"
+        time_format: "HH:mm"
+        format: "LLL"
+        picker_utc: false
+      - label: "Status"
+        name: "status"
+        widget: "select"
+        options: ["Online", "Offline"]
+      - label: "Image"
+        name: "image"
+        widget: "image"
+        choose_url: true
+        media_library:
+          config:
+            multiple: true

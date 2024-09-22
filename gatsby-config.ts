@@ -19,6 +19,7 @@ const config: GatsbyConfig = {
     "gatsby-plugin-image",
     "gatsby-plugin-sitemap",
     "gatsby-plugin-sharp",
+    "gatsby-plugin-decap-cms",
     "gatsby-transformer-sharp",
     {
       resolve: "gatsby-source-filesystem",
