@@ -1,4 +1,9 @@
 import type { GatsbyConfig } from "gatsby";
+import dotenv from "dotenv";
+
+dotenv.config({
+  path: `.env.${process.env.NODE_ENV}`,
+});
 
 const config: GatsbyConfig = {
   siteMetadata: {
@@ -19,7 +24,7 @@ const config: GatsbyConfig = {
       resolve: "gatsby-source-filesystem",
       options: {
         name: "images",
-        path: "./src/images/",
+        path: "./src/assets/",
       },
       __key: "images",
     },

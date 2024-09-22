@@ -13,14 +13,20 @@ const Video = () => {
 
   return (
     <Box
-      height={{ lg: "80vh", sm: "100%", xs: "100%" }}
+      height={{ lg: "85vh", sm: "100%", xs: "100%" }}
       bgcolor="secondary.light"
       display="flex"
       justifyContent="center"
       alignItems="center"
       px={{ lg: 12, xs: 0, sm: 0 }}>
       {video && (
-        <video width="100%" height="100%" loop autoPlay muted className="video">
+        <video
+          width="100%"
+          height="100%"
+          loop
+          autoPlay
+          muted
+          style={{ objectFit: "fill" }}>
           <source src={video} type="video/mp4" />
           Sorry, your browser doesn't support embedded videos.
         </video>
