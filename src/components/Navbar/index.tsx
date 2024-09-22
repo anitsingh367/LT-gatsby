@@ -20,12 +20,14 @@ import MenuIcon from "@mui/icons-material/Menu";
 // import CustomizedMenus from "./CustomizedMenus.react";
 // import ExpandLess from "@mui/icons-material/ExpandLess";
 // import ExpandMore from "@mui/icons-material/ExpandMore";
-// import ContributeModal from "../ContributeModal/ContributeModal.react";
+
 // import VolunteerModal from "../VolunteerModal/VolunteerModal.react";
 
 // import useHashRouteToggle from "../../customHooks/useHashRouteToggle";
 
 import { Link } from "gatsby";
+import ContributeModal from "../ContributeModal";
+import { useHashRouteToggle } from "../../utils";
 
 const drawerWidth = 240;
 
@@ -42,26 +44,26 @@ function DrawerAppBar(props) {
   //   setOpenArticle(!openArticle);
   // };
 
-  //   const [openContributeModal, setOpenContributeModal] =
-  //     useHashRouteToggle("contribute"); //useHasRouteToggle is used for controlling browser back button
+  const [openContributeModal, setOpenContributeModal] =
+    useHashRouteToggle("contribute"); //useHasRouteToggle is used for controlling browser back button
   //   const [openVolunteerModal, setOpenVolunteerModal] =
   //     useHashRouteToggle("volunteer"); //useHasRouteToggle is used for controlling browser back button
 
-  //   const handleContributeButton = () => {
-  //     setOpenContributeModal(true);
-  //   };
+  const handleContributeButton = () => {
+    setOpenContributeModal(true);
+  };
   //   const handleVolunteerButton = () => {
   //     setOpenVolunteerModal(true);
   //   };
 
   const drawer = (
     <div>
-      {/* <ContributeModal
+      <ContributeModal
         isOpen={openContributeModal}
         onClose={(value) => setOpenContributeModal(value)}
         isNavbar={true}
       />
-      <VolunteerModal
+      {/* <VolunteerModal
         isOpen={openVolunteerModal}
         onClose={(value) => setOpenVolunteerModal(value)}
         isNavbar={true}
@@ -124,7 +126,8 @@ function DrawerAppBar(props) {
         top: 0,
         left: 0,
         zIndex: 1000,
-      }}>
+      }}
+    >
       <AppBar component="nav" position="relative">
         <Toolbar
           sx={{
@@ -138,19 +141,22 @@ function DrawerAppBar(props) {
             aligncenter: "center",
             backgroundColor: "#fff",
             color: "#000",
-          }}>
+          }}
+        >
           <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { lg: "none" }, color: "#000" }}>
+            sx={{ mr: 2, display: { lg: "none" }, color: "#000" }}
+          >
             <MenuIcon />
           </IconButton>
           <Box
             sx={{
               display: { lg: "flex", md: "none", sm: "none", xs: "none" },
-            }}>
+            }}
+          >
             <img src={logo} alt="logo" width="15%" height="15%"></img>
           </Box>
           <Box
@@ -159,12 +165,13 @@ function DrawerAppBar(props) {
               justifyContent: "center",
               alignItems: "center",
               gap: 1,
-            }}>
+            }}
+          >
             <Link to="/" className="link">
-              <Button variant="h6">Home</Button>
+              <Button>Home</Button>
             </Link>
             <Link to="/about" className="link">
-              <Button variant="h6">About</Button>
+              <Button>About</Button>
             </Link>
             {/* <CustomizedMenus
               content={{
@@ -173,18 +180,22 @@ function DrawerAppBar(props) {
               }}
             /> */}
             <Link to="/events" className="link">
-              <Button variant="h6">Events</Button>
+              <Button>Events</Button>
             </Link>
             <Link to="/projects" className="link">
-              <Button variant="h6">Projects</Button>
+              <Button>Projects</Button>
             </Link>
             <Link to="/video" className="link">
-              <Button variant="h6">Videos</Button>
+              <Button>Videos</Button>
             </Link>
             <Button variant="contained">Become Volunteer</Button>
           </Box>
 
-          <Button variant="outlined" sx={{ margin: "0 0.5rem" }}>
+          <Button
+            variant="outlined"
+            sx={{ margin: "0 0.5rem" }}
+            onClick={handleContributeButton}
+          >
             Contribute Now
           </Button>
         </Toolbar>
@@ -202,7 +213,8 @@ function DrawerAppBar(props) {
             boxSizing: "border-box",
             width: drawerWidth,
           },
-        }}>
+        }}
+      >
         {drawer}
       </Drawer>
     </Box>
