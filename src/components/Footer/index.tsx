@@ -195,30 +195,51 @@ const Footer = () => {
                 const readableEndDate = moment(endDate).format("h:mm A");
                 const description = `${item.description}. Session will be on ${readableStartDate} - ${readableEndDate}`;
                 return (
-                  <Box
-                    key={index}
-                    sx={{ cursor: "pointer" }}
-                    onClick={() => {
-                      handleEventCard({
-                        heading: item.title,
-                        status: item.chipTemplate.chipText.toLowerCase(),
-                        description: description,
-                        type: item.type,
-                        mapUrl: item.mapUrl,
-                        youtubeUrl: item.youtubeUrl,
-                      });
-                    }}
-                  >
-                    <ListItem
-                      disableGutters
-                      disablePadding
-                      sx={{ color: "secondary.contrastText" }}
+                  <Box>
+                    <Box
+                      key={index}
+                      sx={{ cursor: "pointer" }}
+                      onClick={() => {
+                        handleEventCard({
+                          heading: item.title,
+                          status: item.chipTemplate.chipText.toLowerCase(),
+                          description: description,
+                          type: item.type,
+                          mapUrl: item.mapUrl,
+                          youtubeUrl: item.youtubeUrl,
+                        });
+                      }}
                     >
-                      <ListItemText>{item.title}</ListItemText>
-                    </ListItem>
+                      <ListItem
+                        disableGutters
+                        disablePadding
+                        sx={{ color: "secondary.contrastText" }}
+                      >
+                        <ListItemText>{item.title}</ListItemText>
+                      </ListItem>
+                    </Box>
                   </Box>
                 );
               })
+            )}
+            {homePageEventList.length > 3 && (
+              <Button
+                variant="outlined"
+                sx={{
+                  textTransform: "capitalise",
+                  borderColor: "#fff",
+                  color: "#fff",
+                  marginTop: "1rem",
+                }}
+              >
+                <Link
+                  to="/events"
+                  className="link"
+                  style={{ textDecoration: "none", color: "#fff" }}
+                >
+                  View All
+                </Link>
+              </Button>
             )}
           </List>
           <List
