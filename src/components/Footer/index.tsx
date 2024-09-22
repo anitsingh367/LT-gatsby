@@ -194,7 +194,8 @@ const Footer = () => {
                 const readableStartDate = moment(startDate).format("llll");
                 const readableEndDate = moment(endDate).format("h:mm A");
                 const description = `${item.description}. Session will be on ${readableStartDate} - ${readableEndDate}`;
-                return (
+                return item.chipTemplate.chipText?.toLowerCase() ===
+                  "upcoming" ? (
                   <Box>
                     <Box
                       key={index}
@@ -219,6 +220,11 @@ const Footer = () => {
                       </ListItem>
                     </Box>
                   </Box>
+                ) : (
+                  <Typography color="secondary.contrastText">
+                    There are no upcoming events at the moment. Stay tuned for
+                    future announcements!
+                  </Typography>
                 );
               })
             )}
