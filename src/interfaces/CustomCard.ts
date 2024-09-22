@@ -5,12 +5,12 @@ export interface ChipTemplate {
   icon?: SvgIconComponent;
   chipText: string;
   iconColor?: string;
-  textColor: string;
+  textColor?: string;
 }
 
 // Sub-interface for Secondary Button
 export interface SecondaryButton {
-  icon: SvgIconComponent;
+  icon?: SvgIconComponent;
   btnText: string;
   onClick: () => void;
 }
