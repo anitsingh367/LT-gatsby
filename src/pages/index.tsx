@@ -1,7 +1,6 @@
 import React from "react";
 import Video from "../wrappers/Video";
 import { HeadFC } from "gatsby";
-import Layout from "../components/Layout";
 import Events from "../wrappers/Events";
 import Projects from "../wrappers/Projects";
 import Volunteers from "../wrappers/Volunteers";

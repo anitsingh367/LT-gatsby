@@ -145,14 +145,7 @@ const EventPages: React.FC<EventPagesProps> = (props) => {
   const skeletonCards = Array(3).fill(0);
 
   return (
-    <Container
-      maxWidth={false}
-      sx={{
-        backgroundColor: "var(--secondary-color-light)",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}>
+    <>
       <EventModal
         isOpen={openEventModal}
         onClose={setOpenEventModal}
@@ -164,136 +157,143 @@ const EventPages: React.FC<EventPagesProps> = (props) => {
         mapUrl={selectedEvent.mapUrl}
         youtubeUrl={selectedEvent.youtubeUrl}
       />
-      <Typography
-        variant="h4"
-        align="center"
-        sx={{
-          textTransform: "uppercase",
-          fontWeight: "bold",
-          padding: "2rem",
-        }}>
-        <span style={{ color: "var(--primary-color)" }}> Events </span> at the
-        living treasure
-      </Typography>
       <Container
+        maxWidth={false}
         sx={{
+          backgroundColor: "var(--secondary-color-light)",
           display: "flex",
-          justifyContent: "space-between",
-          alignContent: "center",
-          flexDirection: {
-            lg: "row",
-            md: "row",
-            sm: "column",
-            xs: "column",
-          },
-          gap: { lg: 0, sm: "1rem", xs: "1rem" },
+          flexDirection: "column",
+          alignItems: "center",
         }}>
-        <Box
+        <Typography
+          variant="h4"
+          align="center"
+          textTransform="uppercase"
+          fontWeight="bold"
+          p={2}>
+          <span style={{ color: "var(--primary-color)" }}> Events </span> at the
+          living treasure
+        </Typography>
+        <Container
           sx={{
             display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: "space-between",
+            alignContent: "center",
+            flexDirection: {
+              lg: "row",
+              md: "row",
+              sm: "column",
+              xs: "column",
+            },
+            gap: { lg: 0, sm: "1rem", xs: "1rem" },
           }}>
-          <ToggleButtonGroup
-            aria-label="text button group"
-            size="large"
-            color="primary"
-            exclusive
-            value={status}
-            onChange={handleChangeToggle}
+          <Box
             sx={{
               display: "flex",
-              justifyContent: { sm: "center", xs: "center" },
-            }}>
-            <ToggleButton value="All">All</ToggleButton>
-            <ToggleButton value="Live">Live</ToggleButton>
-            <ToggleButton value="Upcoming">Upcoming</ToggleButton>
-            <ToggleButton value="Finished">Finished</ToggleButton>
-          </ToggleButtonGroup>
-        </Box>
-      </Container>
-      <Container
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "space-evenly",
-          width: "100%",
-        }}>
-        {isLoading ? (
-          skeletonCards.map((_, index) => <SkeletonCard key={index} />)
-        ) : newEventList.length === 0 ? (
-          <Container
-            sx={{
-              display: "flex",
-              alignItems: "center",
               justifyContent: "center",
-              height: "200px",
+              alignItems: "center",
             }}>
-            <Typography>Oops! No Data found</Typography>
-          </Container>
-        ) : (
-          newEventList
-            .sort((a, b) => {
-              const aDate = new Date(a.date?.startDate);
-              const bDate = new Date(b.date?.startDate);
-              const aEndDate = new Date(a.date?.endDate);
-              const bEndDate = new Date(b.date?.endDate);
+            <ToggleButtonGroup
+              aria-label="text button group"
+              size="large"
+              color="primary"
+              exclusive
+              value={status}
+              onChange={handleChangeToggle}
+              sx={{
+                display: "flex",
+                justifyContent: { sm: "center", xs: "center" },
+              }}>
+              <ToggleButton value="All">All</ToggleButton>
+              <ToggleButton value="Live">Live</ToggleButton>
+              <ToggleButton value="Upcoming">Upcoming</ToggleButton>
+              <ToggleButton value="Finished">Finished</ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
+        </Container>
+        <Container
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "space-evenly",
+            width: "100%",
+          }}>
+          {isLoading ? (
+            skeletonCards.map((_, index) => <SkeletonCard key={index} />)
+          ) : newEventList.length === 0 ? (
+            <Container
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "200px",
+              }}>
+              <Typography>Oops! No Data found</Typography>
+            </Container>
+          ) : (
+            newEventList
+              .sort((a, b) => {
+                const aDate = new Date(a.date?.startDate);
+                const bDate = new Date(b.date?.startDate);
+                const aEndDate = new Date(a.date?.endDate);
+                const bEndDate = new Date(b.date?.endDate);
 
-              if (aDate < currentDate && aEndDate > currentDate) {
-                return -1;
-              } else if (bDate < currentDate && bEndDate > currentDate) {
-                return 1;
-              } else if (aDate > currentDate && bDate > currentDate) {
-                return aDate.getTime() - bDate.getTime();
-              } else {
-                return bEndDate.getTime() - aEndDate.getTime();
-              }
-            })
-            .map((items, index) => {
-              const startDate = items.date?.startDate;
-              const endDate = items.date?.endDate;
-              const readableStartDate = moment(startDate).format("llll");
-              const readableEndDate = moment(endDate).format("h:mm A");
+                if (aDate < currentDate && aEndDate > currentDate) {
+                  return -1;
+                } else if (bDate < currentDate && bEndDate > currentDate) {
+                  return 1;
+                } else if (aDate > currentDate && bDate > currentDate) {
+                  return aDate.getTime() - bDate.getTime();
+                } else {
+                  return bEndDate.getTime() - aEndDate.getTime();
+                }
+              })
+              .map((items, index) => {
+                const startDate = items.date?.startDate;
+                const endDate = items.date?.endDate;
+                const readableStartDate = moment(startDate).format("llll");
+                const readableEndDate = moment(endDate).format("h:mm A");
 
-              const description = `${items.description}. Session will be on ${readableStartDate} - ${readableEndDate}`;
-              return (
-                <Box
-                  sx={{
-                    height: "auto",
-                    width: "18.5rem",
-                    margin: { xl: 2.5, lg: 2, md: 2, sm: 1.5, xs: 1 },
-                  }}
-                  key={index}>
-                  <CustomCard
-                    image={items.imageUrl}
-                    heading={items.title}
-                    description={description}
-                    chipTemplate={items.chipTemplate}
-                    primaryBtn={{
-                      btnText: "View Details",
-                      onClick: () => {
-                        handleEventCard({
-                          heading: items.title,
-                          status:
-                            items.chipTemplate?.chipText?.toLowerCase() as
-                              | "upcoming"
-                              | "live"
-                              | "finished"
-                              | "",
-                          description: description,
-                          type: items.type,
-                          mapUrl: items.mapUrl,
-                          youtubeUrl: items.youtubeUrl,
-                        });
-                      },
+                const description = `${items.description}. Session will be on ${readableStartDate} - ${readableEndDate}`;
+                return (
+                  <Box
+                    sx={{
+                      height: "auto",
+                      width: "18.5rem",
+                      margin: { xl: 2.5, lg: 2, md: 2, sm: 1.5, xs: 1 },
                     }}
-                  />
-                </Box>
-              );
-            })
-        )}
+                    key={index}>
+                    <CustomCard
+                      image={items.imageUrl}
+                      heading={items.title}
+                      description={description}
+                      chipTemplate={items.chipTemplate}
+                      primaryBtn={{
+                        btnText: "View Details",
+                        onClick: () => {
+                          handleEventCard({
+                            heading: items.title,
+                            status:
+                              items.chipTemplate?.chipText?.toLowerCase() as
+                                | "upcoming"
+                                | "live"
+                                | "finished"
+                                | "",
+                            description: description,
+                            type: items.type,
+                            mapUrl: items.mapUrl,
+                            youtubeUrl: items.youtubeUrl,
+                          });
+                        },
+                      }}
+                    />
+                  </Box>
+                );
+              })
+          )}
+        </Container>
       </Container>
-    </Container>
+    </>
   );
 };
 

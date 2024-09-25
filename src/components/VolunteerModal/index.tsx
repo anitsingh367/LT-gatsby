@@ -132,8 +132,7 @@ const VolunteerModal: React.FC<VolunteerModalProps> = (props) => {
               sx={{ ml: 2, flex: 1, padding: "0.5rem 0" }}
               variant="h6"
               component="div">
-              Become a Volunteer
-              {props.projectHeading ? " for " + props.projectHeading : ""}
+              {props.projectHeading ?? "Become a Volunteer"}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -144,8 +143,7 @@ const VolunteerModal: React.FC<VolunteerModalProps> = (props) => {
               name="volunteer-form"
               method="POST"
               data-netlify="true"
-              onSubmit={handleSubmitForm}
-            >
+              onSubmit={handleSubmitForm}>
               <input type="hidden" name="form-name" value="volunteer-form" />
               <DialogContent
                 sx={{
@@ -158,14 +156,14 @@ const VolunteerModal: React.FC<VolunteerModalProps> = (props) => {
                     sm: "20rem",
                     xs: "20rem",
                   },
-                }}
-              >
+                }}>
                 <DialogContentText>
-                  Volunteers are essential to The Living Treasure Foundation, helping us
-                  preserve and promote cultural heritage. From event organization to
-                  research and administrative tasks, they contribute valuable skills. If
-                  you're passionate about making a difference, contact us to explore
-                  current volunteer opportunities.
+                  Volunteers are essential to The Living Treasure Foundation,
+                  helping us preserve and promote cultural heritage. From event
+                  organization to research and administrative tasks, they
+                  contribute valuable skills. If you're passionate about making
+                  a difference, contact us to explore current volunteer
+                  opportunities.
                 </DialogContentText>
                 <FormControl sx={{ marginTop: "0.5rem" }}>
                   <InputLabel htmlFor="name-input-box" required>
@@ -184,7 +182,7 @@ const VolunteerModal: React.FC<VolunteerModalProps> = (props) => {
                     </FormHelperText>
                   )}
                 </FormControl>
-          
+
                 <FormControl sx={{ flex: 1 }}>
                   <InputLabel htmlFor="mobile-input-box" required>
                     Mobile
@@ -206,8 +204,7 @@ const VolunteerModal: React.FC<VolunteerModalProps> = (props) => {
                 <FormControl
                   sx={{
                     flex: 1,
-                  }}
-                >
+                  }}>
                   <InputLabel htmlFor="email-input-box" required>
                     Email
                   </InputLabel>
@@ -228,8 +225,7 @@ const VolunteerModal: React.FC<VolunteerModalProps> = (props) => {
                 <FormControl
                   sx={{
                     flex: 1,
-                  }}
-                >
+                  }}>
                   <InputLabel htmlFor="position-input-box" required>
                     How can you help us?
                   </InputLabel>
@@ -252,8 +248,7 @@ const VolunteerModal: React.FC<VolunteerModalProps> = (props) => {
                     formData.mob === "" ||
                     formData.email === "" ||
                     formData.position === ""
-                  }
-                >
+                  }>
                   Submit
                 </Button>
               </DialogActions>

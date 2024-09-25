@@ -42,7 +42,7 @@ export default function CustomCard({
           boxShadow: hoverEffect ? 1 : 4,
         },
       }}>
-      <CardMedia component="img" image={image || defaultImage} alt={heading} />
+      <CardMedia component="img" image={image ?? defaultImage} alt={heading} />
       <CardContent sx={{ paddingBottom: 0 }}>
         <Box
           sx={{
