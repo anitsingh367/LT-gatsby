@@ -203,6 +203,7 @@ const VolunteerModal: React.FC<VolunteerModalProps> = (props) => {
                     }}
                   />
                 </FormControl>
+
                 <FormControl
                   sx={{
                     flex: 1,
@@ -225,6 +226,7 @@ const VolunteerModal: React.FC<VolunteerModalProps> = (props) => {
                     </FormHelperText>
                   )}
                 </FormControl>
+                
                 <FormControl
                   sx={{
                     flex: 1,
