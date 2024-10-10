@@ -92,6 +92,9 @@ export default function Events() {
   };
 
   const skeletonCards = Array(4).fill(0);
+  const homePageEventList = newEventList
+    .slice(0, 4)
+    .filter((item) => item.chipTemplate.chipText !== "Finished");
 
   return (
     <Box
@@ -99,7 +102,8 @@ export default function Events() {
       display="flex"
       flexDirection="column"
       alignItems="center"
-      py={2}>
+      py={2}
+    >
       <EventModal
         isOpen={openEventModal}
         onClose={setOpenEventModal}
@@ -115,7 +119,8 @@ export default function Events() {
         variant="h4"
         align="center"
         mb={2}
-        sx={{ textTransform: "uppercase", fontWeight: "bold" }}>
+        sx={{ textTransform: "uppercase", fontWeight: "bold" }}
+      >
         <Box component="span" color="primary.main">
           events
         </Box>{" "}
@@ -129,55 +134,59 @@ export default function Events() {
           alignItems: "center",
           justifyContent: "space-evenly",
           gap: 2,
-        }}>
+        }}
+      >
         {isLoading ? (
           skeletonCards.map((_, index) => <SkeletonCard key={index} />)
         ) : newEventList.length === 0 ? (
-          <Typography>Oops! No Data found</Typography>
+          <Typography textAlign="center">Oops! No Data found</Typography>
+        ) : homePageEventList.length === 0 ? (
+          <Typography textAlign="center">
+            There are no upcoming events at the moment. Stay tuned for future
+            announcements!
+          </Typography>
         ) : (
-          newEventList
-            .slice(0, 4)
-            .filter((item) => item.chipTemplate.chipText !== "Finished")
-            .map((item, index) => {
-              console.log("item", item);
-              const startDate = item.date.startDate;
-              const endDate = item.date.endDate;
-              const readableStartDate = moment(startDate).format("llll");
-              const readableEndDate = moment(endDate).format("h:mm A");
-              const description = `${item.description}. Session will be on ${readableStartDate} - ${readableEndDate}`;
-              return (
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%",
-                    maxWidth: "280px",
+          homePageEventList?.map((item, index) => {
+            console.log("item", item);
+            const startDate = item.date.startDate;
+            const endDate = item.date.endDate;
+            const readableStartDate = moment(startDate).format("llll");
+            const readableEndDate = moment(endDate).format("h:mm A");
+            const description = `${item.description}. Session will be on ${readableStartDate} - ${readableEndDate}`;
+            return (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  maxWidth: "280px",
+                }}
+                key={index}
+              >
+                <CustomCard
+                  image={item.imageUrl}
+                  heading={item.title}
+                  description={description}
+                  type={item.type}
+                  chipTemplate={item.chipTemplate}
+                  primaryBtn={{
+                    btnText: "View Details",
+                    onClick: () => {
+                      handleEventCard({
+                        heading: item.title,
+                        status: item.chipTemplate.chipText.toLowerCase(),
+                        description: description,
+                        type: item.type,
+                        mapUrl: item.mapUrl,
+                        youtubeUrl: item.youtubeUrl,
+                      });
+                    },
                   }}
-                  key={index}>
-                  <CustomCard
-                    image={item.imageUrl}
-                    heading={item.title}
-                    description={description}
-                    type={item.type}
-                    chipTemplate={item.chipTemplate}
-                    primaryBtn={{
-                      btnText: "View Details",
-                      onClick: () => {
-                        handleEventCard({
-                          heading: item.title,
-                          status: item.chipTemplate.chipText.toLowerCase(),
-                          description: description,
-                          type: item.type,
-                          mapUrl: item.mapUrl,
-                          youtubeUrl: item.youtubeUrl,
-                        });
-                      },
-                    }}
-                  />
-                </Box>
-              );
-            })
+                />
+              </Box>
+            );
+          })
         )}
       </Container>
 

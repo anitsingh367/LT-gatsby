@@ -15,29 +15,97 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import { Link } from "gatsby";
 import { getEventDetails } from "../../firebase";
+import moment from "moment";
+import { useHashRouteToggle } from "../../utils";
+import EventModal from "../EventModal";
 
 const Footer = () => {
-  const [eventTitle, setEventTitle] = useState([
-    "GURBANI SEMINAR - GRATITUDE",
-    "GURBANI DE CHANAN CH AKHAN - TIK JANA",
-    "GURBANI DE CHANAN CH AKHAN - VEEH VISVAY YAKEEN HONA",
-    "GURBANI DE CHANAN CH AKHAN - RETHARIA DA PARSAD",
-  ]);
+  const [eventTitle, setEventTitle] = useState([]);
 
+  const [eventDetails, setEventDetails] = useState([]);
   useEffect(() => {
     getEventDetails().then((data) => {
-      let eventTitle = data.map((item) => item.title);
-      setEventTitle(eventTitle);
+      setEventDetails(data);
     });
   }, []);
+  const currentDate = new Date();
+  const newEventList = eventDetails
+    .sort((a, b) => {
+      const aDate = new Date(a.date.startDate);
+      const bDate = new Date(b.date.startDate);
+      const aEndDate = new Date(a.date.endDate);
+      const bEndDate = new Date(b.date.endDate);
 
+      if (aDate < currentDate && aEndDate > currentDate) return -1;
+      if (bDate < currentDate && bEndDate > currentDate) return 1;
+      if (aDate > currentDate && bDate > currentDate)
+        return aDate.getTime() - bDate.getTime();
+      return bEndDate.getTime() - aEndDate.getTime();
+    })
+    .map((item) => {
+      const startDate = item.date.startDate;
+      const endDate = item.date.endDate;
+
+      if (moment().isBetween(startDate, endDate)) {
+        item.chipTemplate = {
+          chipText: "Live",
+        };
+      } else if (moment().isBefore(startDate)) {
+        item.chipTemplate = {
+          chipText: "Upcoming",
+        };
+      } else if (moment().isAfter(endDate)) {
+        item.chipTemplate = {
+          chipText: "Finished",
+        };
+      }
+
+      return item;
+    });
+  const homePageEventList = newEventList
+    .slice(0, 4)
+    .filter((item) => item.chipTemplate.chipText !== "Finished");
+
+  const [openEventModal, setOpenEventModal] = useHashRouteToggle("event");
+  const [selectedEvent, setSelectedEvent] = useState({
+    heading: "",
+    status: "" as "" | "upcoming" | "live" | "finished",
+    description: "",
+    type: "",
+    mapUrl: "",
+    youtubeUrl: "",
+  });
+
+  const handleEventCard = (selectedData) => {
+    setOpenEventModal(true);
+    setSelectedEvent({
+      heading: selectedData.heading,
+      status: selectedData.status,
+      description: selectedData.description,
+      type: selectedData.type,
+      mapUrl: selectedData.mapUrl,
+      youtubeUrl: selectedData.youtubeUrl,
+    });
+  };
   return (
     <>
       <Box
         sx={{
           width: 1,
           backgroundColor: "secondary.main",
-        }}>
+        }}
+      >
+        <EventModal
+          isOpen={openEventModal}
+          onClose={setOpenEventModal}
+          heading={selectedEvent.heading}
+          status={selectedEvent.status}
+          description={selectedEvent.description}
+          type={selectedEvent.type}
+          mapUrl={selectedEvent.mapUrl}
+          youtubeUrl={selectedEvent.youtubeUrl}
+          onSubmit={() => setOpenEventModal(false)}
+        />
         <Container
           sx={{
             display: "flex",
@@ -50,7 +118,8 @@ const Footer = () => {
               sm: "column",
               xs: "column",
             },
-          }}>
+          }}
+        >
           <List
             sx={{
               width: { lg: "33.33%", md: 1, sm: 1, xs: 1 },
@@ -59,20 +128,23 @@ const Footer = () => {
               justifyContent: "center",
               alignItems: "flex-start",
               alignSelf: "start",
-            }}>
+            }}
+          >
             <ListSubheader
               disableGutters
               sx={{
                 textTransform: "uppercase",
                 background: "transparent",
                 color: "#fff",
-              }}>
+              }}
+            >
               about the living treasure
             </ListSubheader>
             <ListItemText
               sx={{
                 color: "secondary.contrastText",
-              }}>
+              }}
+            >
               Promoting the doctrine of "The Universal Truth", which stands for
               equal value to every human, irrespective of caste, creed, color or
               gender.
@@ -84,10 +156,12 @@ const Footer = () => {
                 borderColor: "#fff",
                 color: "#fff",
                 marginTop: "1rem",
-              }}>
+              }}
+            >
               <Link
                 to="/about"
-                style={{ textDecoration: "none", color: "#fff" }}>
+                style={{ textDecoration: "none", color: "#fff" }}
+              >
                 Know More
               </Link>
             </Button>
@@ -96,42 +170,99 @@ const Footer = () => {
             sx={{
               textAlign: "left",
               width: { lg: "33.33%", md: 1, sm: 1, xs: 1 },
-            }}>
+            }}
+          >
             <ListSubheader
               disableGutters
               sx={{
                 textTransform: "uppercase",
                 background: "transparent",
                 color: "#fff",
-              }}>
+              }}
+            >
               UPCOMING EVENTS
             </ListSubheader>
-            {eventTitle.slice(0, 5)?.map((items, index) => {
-              return (
-                <div key={index}>
-                  <ListItem
-                    disableGutters
-                    disablePadding
-                    sx={{ color: "secondary.contrastText" }}>
-                    <ListItemText>{items}</ListItemText>
-                  </ListItem>
-                </div>
-              );
-            })}
+            {homePageEventList.length === 0 ? (
+              <Typography color="secondary.contrastText">
+                There are no upcoming events at the moment. Stay tuned for
+                future announcements!
+              </Typography>
+            ) : (
+              homePageEventList.slice(0, 5)?.map((item, index) => {
+                const startDate = item.date.startDate;
+                const endDate = item.date.endDate;
+                const readableStartDate = moment(startDate).format("llll");
+                const readableEndDate = moment(endDate).format("h:mm A");
+                const description = `${item.description}. Session will be on ${readableStartDate} - ${readableEndDate}`;
+                return item.chipTemplate.chipText?.toLowerCase() ===
+                  "upcoming" ? (
+                  <Box>
+                    <Box
+                      key={index}
+                      sx={{ cursor: "pointer" }}
+                      onClick={() => {
+                        handleEventCard({
+                          heading: item.title,
+                          status: item.chipTemplate.chipText.toLowerCase(),
+                          description: description,
+                          type: item.type,
+                          mapUrl: item.mapUrl,
+                          youtubeUrl: item.youtubeUrl,
+                        });
+                      }}
+                    >
+                      <ListItem
+                        disableGutters
+                        disablePadding
+                        sx={{ color: "secondary.contrastText" }}
+                      >
+                        <ListItemText>{item.title}</ListItemText>
+                      </ListItem>
+                    </Box>
+                  </Box>
+                ) : (
+                  <Typography color="secondary.contrastText">
+                    There are no upcoming events at the moment. Stay tuned for
+                    future announcements!
+                  </Typography>
+                );
+              })
+            )}
+            {homePageEventList.length > 3 && (
+              <Button
+                variant="outlined"
+                sx={{
+                  textTransform: "capitalise",
+                  borderColor: "#fff",
+                  color: "#fff",
+                  marginTop: "1rem",
+                }}
+              >
+                <Link
+                  to="/events"
+                  className="link"
+                  style={{ textDecoration: "none", color: "#fff" }}
+                >
+                  View All
+                </Link>
+              </Button>
+            )}
           </List>
           <List
             sx={{
               width: { lg: "33.33%", md: 1, sm: 1, xs: 1 },
               display: "flex",
               flexDirection: "column",
-            }}>
+            }}
+          >
             <ListSubheader
               disableGutters
               sx={{
                 textTransform: "uppercase",
                 background: "transparent",
                 color: "#fff",
-              }}>
+              }}
+            >
               CONTACT US
             </ListSubheader>
             <ListItem
@@ -142,7 +273,8 @@ const Footer = () => {
                 alignItems: "flex-start",
               }}
               disableGutters
-              disablePadding>
+              disablePadding
+            >
               <ListItemText primary="9 Hallyer Avenue" />
               <ListItemText primary="Brampton, L6M0Y4" />
               <ListItemText primary="Ontario, Canada" />
@@ -169,12 +301,14 @@ const Footer = () => {
             gap: "0.5rem",
             color: "#fff",
             padding: "1.5rem",
-          }}>
+          }}
+        >
           <a
             href="https://www.instagram.com/veerbhupindersingh_usa/"
             target="_blank"
             rel="noreferrer"
-            className="link">
+            className="link"
+          >
             <InstagramIcon fontSize="large" />
           </a>
           <LinkedInIcon fontSize="large" />
@@ -182,14 +316,16 @@ const Footer = () => {
             href="https://www.youtube.com/@TheLivingTreasure"
             target="_blank"
             rel="noopener noreferrer"
-            className="link">
+            className="link"
+          >
             <YouTubeIcon fontSize="large" />
           </a>
           <a
             href="https://www.facebook.com/VeerBhupinderSingh/"
             target="_blank"
             rel="noopener noreferrer"
-            className="link">
+            className="link"
+          >
             <FacebookIcon fontSize="large" />
           </a>
         </Container>
@@ -202,11 +338,13 @@ const Footer = () => {
             background: "#323B45",
             textAlign: "center",
           }}
-          maxWidth={false}>
+          maxWidth={false}
+        >
           <Typography
             sx={{
               padding: "1.5rem",
-            }}>
+            }}
+          >
             Copyright 2022.{" "}
             <Link to="/terms-and-conditions" style={{ color: "inherit" }}>
               <Box component="span">Terms and Conditions</Box>
