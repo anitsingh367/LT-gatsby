@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 import {
   Close as CloseIcon,
-  VolunteerActivism as Thanks,
+  VolunteerActivism as ThanksIcon,
 } from "@mui/icons-material";
 import {
   emailValidation,
@@ -35,93 +35,107 @@ interface VolunteerModalProps {
   projectHeading?: string;
 }
 
-interface FormData {
+interface VolunteerFormData {
   name: string;
-  mob: string;
+  mobile: string;
   email: string;
   position: string;
   project?: string;
 }
 
-const initialFormState: FormData = {
+const initialFormState: VolunteerFormData = {
   name: "",
-  mob: "",
+  mobile: "",
   email: "",
   position: "",
 };
 
-const VolunteerModal: React.FC<VolunteerModalProps> = (props) => {
-  const [open, setOpen] = useState<boolean>(false);
-  const [formData, setFormData] = useState<FormData>(initialFormState);
-  const [isEmailValid, setEmailValid] = useState<boolean>(true);
-  const [isNameValid, setNameValid] = useState<boolean>(true);
-  const [isToasterOpen, setIsToasterOpen] = useState<boolean>(false);
+const VolunteerModal: React.FC<VolunteerModalProps> = ({
+  isOpen,
+  onClose,
+  projectHeading,
+}) => {
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [formData, setFormData] = useState<VolunteerFormData>(initialFormState);
+  const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
+  const [isNameValid, setIsNameValid] = useState<boolean>(true);
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    setOpen(props.isOpen);
-  }, [props.isOpen]);
+    setIsDialogOpen(isOpen);
+  }, [isOpen]);
 
   const handleClose = () => {
-    props.onClose(false);
-    setOpen(false);
-    resetData();
+    onClose(false);
+    setIsDialogOpen(false);
+    resetFormData();
   };
 
-  const volunteereData = async () => {
+  const submitVolunteerData = async () => {
     const dataRef = collection(db, "volunteerDetails");
     await addDoc(dataRef, {
       created: serverTimestamp(),
       formData: formData,
     });
+
+    await fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams(Object.entries(formData)).toString(),
+    })
+      .then(() => console.log("Form successfully submitted"))
+      .catch((error) => alert(error));
   };
 
-  const handleForm =
-    (prop: keyof FormData) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      setFormData({ ...formData, [prop]: event.target.value });
+  const handleInputChange =
+    (field: keyof VolunteerFormData) =>
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setFormData({ ...formData, [field]: event.target.value });
     };
 
-  const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const email = e.target.value.trim();
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const email = event.target.value.trim();
     if (!email || emailValidation().test(email) === false) {
-      setEmailValid(false);
+      setIsEmailValid(false);
     } else {
-      setEmailValid(true);
+      setIsEmailValid(true);
       setFormData({ ...formData, email: email });
     }
   };
 
-  const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.value.trim();
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const name = event.target.value.trim();
     if (!name || nameValidation().test(name) === false) {
-      setNameValid(false);
+      setIsNameValid(false);
     } else {
-      setNameValid(true);
+      setIsNameValid(true);
       setFormData({ ...formData, name: name });
     }
   };
 
-  const handleSubmitForm = () => {
-    formData.project = props.projectHeading || "";
-    setIsToasterOpen(true);
-    volunteereData();
+  const handleSubmitForm = async (event: React.FormEvent) => {
+    event.preventDefault();
+    formData.project = projectHeading || "";
+    setIsSnackbarOpen(true);
+    await submitVolunteerData();
   };
 
-  const resetData = () => {
+  const resetFormData = () => {
     setFormData(initialFormState);
-    setEmailValid(true);
-    setNameValid(true);
+    setIsEmailValid(true);
+    setIsNameValid(true);
   };
 
   return (
-    props.isOpen && (
-      <Dialog open={open}>
+    isOpen && (
+      <Dialog open={isDialogOpen}>
         <AppBar position="sticky">
           <Toolbar>
             <IconButton
               edge="start"
               color="inherit"
               onClick={() => {
-                setIsToasterOpen(false);
+                setIsSnackbarOpen(false);
                 handleClose();
                 setFormData(initialFormState);
               }}
@@ -133,19 +147,18 @@ const VolunteerModal: React.FC<VolunteerModalProps> = (props) => {
               variant="h6"
               component="div">
               Become a Volunteer
-              {props.projectHeading ? " for " + props.projectHeading : ""}
+              {projectHeading ? " for " + projectHeading : ""}
             </Typography>
           </Toolbar>
         </AppBar>
 
-        {!isToasterOpen && (
+        {!isSnackbarOpen && (
           <>
             <form
               name="volunteer-form"
               method="POST"
               data-netlify="true"
-              onSubmit={handleSubmitForm}
-            >
+              onSubmit={handleSubmitForm}>
               <input type="hidden" name="form-name" value="volunteer-form" />
               <DialogContent
                 sx={{
@@ -158,14 +171,14 @@ const VolunteerModal: React.FC<VolunteerModalProps> = (props) => {
                     sm: "20rem",
                     xs: "20rem",
                   },
-                }}
-              >
+                }}>
                 <DialogContentText>
-                  Volunteers are essential to The Living Treasure Foundation, helping us
-                  preserve and promote cultural heritage. From event organization to
-                  research and administrative tasks, they contribute valuable skills. If
-                  you're passionate about making a difference, contact us to explore
-                  current volunteer opportunities.
+                  Volunteers are essential to The Living Treasure Foundation,
+                  helping us preserve and promote cultural heritage. From event
+                  organization to research and administrative tasks, they
+                  contribute valuable skills. If you're passionate about making
+                  a difference, contact us to explore current volunteer
+                  opportunities.
                 </DialogContentText>
                 <FormControl sx={{ marginTop: "0.5rem" }}>
                   <InputLabel htmlFor="name-input-box" required>
@@ -176,15 +189,15 @@ const VolunteerModal: React.FC<VolunteerModalProps> = (props) => {
                     id="name-input-box"
                     label="Name"
                     name="name"
-                    onChange={handleName}
+                    onChange={handleNameChange}
                   />
                   {!isNameValid && (
                     <FormHelperText error id="name-error">
-                      Please enter valid name
+                      Please enter a valid name
                     </FormHelperText>
                   )}
                 </FormControl>
-          
+
                 <FormControl sx={{ flex: 1 }}>
                   <InputLabel htmlFor="mobile-input-box" required>
                     Mobile
@@ -195,7 +208,7 @@ const VolunteerModal: React.FC<VolunteerModalProps> = (props) => {
                     label="Mobile"
                     name="mobile"
                     type="tel"
-                    onChange={handleForm("mob")}
+                    onChange={handleInputChange("mobile")}
                     onKeyPress={(e) => {
                       if (numberValidation().test(e.key) === false) {
                         e.preventDefault();
@@ -204,11 +217,7 @@ const VolunteerModal: React.FC<VolunteerModalProps> = (props) => {
                   />
                 </FormControl>
 
-                <FormControl
-                  sx={{
-                    flex: 1,
-                  }}
-                >
+                <FormControl sx={{ flex: 1 }}>
                   <InputLabel htmlFor="email-input-box" required>
                     Email
                   </InputLabel>
@@ -218,20 +227,16 @@ const VolunteerModal: React.FC<VolunteerModalProps> = (props) => {
                     label="Email"
                     name="email"
                     type="email"
-                    onChange={handleEmail}
+                    onChange={handleEmailChange}
                   />
                   {!isEmailValid && (
                     <FormHelperText error id="email-error">
-                      Please enter valid email address
+                      Please enter a valid email address
                     </FormHelperText>
                   )}
                 </FormControl>
-                
-                <FormControl
-                  sx={{
-                    flex: 1,
-                  }}
-                >
+
+                <FormControl sx={{ flex: 1 }}>
                   <InputLabel htmlFor="position-input-box" required>
                     How can you help us?
                   </InputLabel>
@@ -241,7 +246,7 @@ const VolunteerModal: React.FC<VolunteerModalProps> = (props) => {
                     label="How can you help us?"
                     name="position"
                     type="text"
-                    onChange={handleForm("position")}
+                    onChange={handleInputChange("position")}
                   />
                 </FormControl>
               </DialogContent>
@@ -251,18 +256,17 @@ const VolunteerModal: React.FC<VolunteerModalProps> = (props) => {
                   type="submit"
                   disabled={
                     formData.name === "" ||
-                    formData.mob === "" ||
+                    formData.mobile === "" ||
                     formData.email === "" ||
                     formData.position === ""
-                  }
-                >
+                  }>
                   Submit
                 </Button>
               </DialogActions>
             </form>
           </>
         )}
-        {isToasterOpen && (
+        {isSnackbarOpen && (
           <Box
             sx={{
               flex: 1,
@@ -274,11 +278,11 @@ const VolunteerModal: React.FC<VolunteerModalProps> = (props) => {
               animation="zoom"
               iconColor="var(--primary-color)"
               textColor="var(--primary-color)"
-              icon={Thanks}
+              icon={ThanksIcon}
               message="Thank you for your interest, we will contact you soon"
               closeMessage="Okay"
               onClose={(value) => {
-                setIsToasterOpen(value);
+                setIsSnackbarOpen(value);
                 handleClose();
                 setFormData(initialFormState);
               }}
