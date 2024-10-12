@@ -186,7 +186,7 @@ const VolunteerModal: React.FC<VolunteerModalProps> = ({
                   opportunities.
                 </DialogContentText>
 
-                <input type="hidden" name="form-name" value="volunteer-form" />
+                <input type="hidden" name="bot-field" value="volunteer-form" />
                 <FormControl fullWidth margin="normal">
                   <InputLabel htmlFor="name-input-box" required>
                     Name
