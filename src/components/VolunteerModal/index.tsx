@@ -155,16 +155,12 @@ const VolunteerModal: React.FC<VolunteerModalProps> = ({
         {!isSnackbarOpen && (
           <>
             <form
+              data-netlify="true"
               name="volunteer-form"
               method="POST"
-              data-netlify="true"
               onSubmit={handleSubmitForm}>
-              <input type="hidden" name="form-name" value="volunteer-form" />
               <DialogContent
                 sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 1.5,
                   minWidth: {
                     lg: "25rem",
                     md: "25rem",
@@ -180,7 +176,9 @@ const VolunteerModal: React.FC<VolunteerModalProps> = ({
                   a difference, contact us to explore current volunteer
                   opportunities.
                 </DialogContentText>
-                <FormControl sx={{ marginTop: "0.5rem" }}>
+
+                <input type="hidden" name="form-name" value="volunteer-form" />
+                <FormControl fullWidth margin="normal">
                   <InputLabel htmlFor="name-input-box" required>
                     Name
                   </InputLabel>
@@ -198,7 +196,7 @@ const VolunteerModal: React.FC<VolunteerModalProps> = ({
                   )}
                 </FormControl>
 
-                <FormControl sx={{ flex: 1 }}>
+                <FormControl fullWidth margin="normal">
                   <InputLabel htmlFor="mobile-input-box" required>
                     Mobile
                   </InputLabel>
@@ -217,7 +215,7 @@ const VolunteerModal: React.FC<VolunteerModalProps> = ({
                   />
                 </FormControl>
 
-                <FormControl sx={{ flex: 1 }}>
+                <FormControl fullWidth margin="normal">
                   <InputLabel htmlFor="email-input-box" required>
                     Email
                   </InputLabel>
@@ -236,7 +234,7 @@ const VolunteerModal: React.FC<VolunteerModalProps> = ({
                   )}
                 </FormControl>
 
-                <FormControl sx={{ flex: 1 }}>
+                <FormControl fullWidth margin="normal">
                   <InputLabel htmlFor="position-input-box" required>
                     How can you help us?
                   </InputLabel>
