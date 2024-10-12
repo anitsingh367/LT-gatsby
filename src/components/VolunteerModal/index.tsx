@@ -156,6 +156,7 @@ const VolunteerModal: React.FC<VolunteerModalProps> = ({
           <>
             <form
               data-netlify="true"
+              data-netlify-honeypot="bot-field"
               name="volunteer-form"
               method="POST"
               onSubmit={handleSubmitForm}>
