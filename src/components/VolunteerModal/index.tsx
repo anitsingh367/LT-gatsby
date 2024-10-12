@@ -71,6 +71,14 @@ const VolunteerModal: React.FC<VolunteerModalProps> = ({
     resetFormData();
   };
 
+  const encode = (data) => {
+    return Object.keys(data)
+      .map(
+        (key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key])
+      )
+      .join("&");
+  };
+
   const submitVolunteerData = async () => {
     const dataRef = collection(db, "volunteerDetails");
     await addDoc(dataRef, {
@@ -81,7 +89,7 @@ const VolunteerModal: React.FC<VolunteerModalProps> = ({
     await fetch("/", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams(Object.entries(formData)).toString(),
+      body: encode({ "form-name": "volunteer-form", ...formData }),
     })
       .then(() => console.log("Form successfully submitted"))
       .catch((error) => alert(error));
