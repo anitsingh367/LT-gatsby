@@ -28,6 +28,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "gatsby";
 import { useHashRouteToggle } from "../../utils";
 import VolunteerModal from "../VolunteerModal";
+import ContributeModal from "../ContributeModal";
+// import PaypalButton from "../PaypalButton";
 
 const drawerWidth = 240;
 
@@ -44,14 +46,18 @@ function DrawerAppBar(props) {
   //   setOpenArticle(!openArticle);
   // };
 
-  //   const [openContributeModal, setOpenContributeModal] =
-  //     useHashRouteToggle("contribute"); //useHasRouteToggle is used for controlling browser back button
+  const [openContributeModal, setOpenContributeModal] =
+    useHashRouteToggle("contribute"); //useHasRouteToggle is used for controlling browser back button
   const [openVolunteerModal, setOpenVolunteerModal] =
     useHashRouteToggle("volunteer"); //useHasRouteToggle is used for controlling browser back button
 
-  //   const handleContributeButton = () => {
-  //     setOpenContributeModal(true);
-  //   };
+  const handleContributeButton = () => {
+    window.open(
+      "https://www.paypal.com/donate/?hosted_button_id=U5J3AB9VBWDLN",
+      "_blank"
+    );
+    // setOpenContributeModal(true);
+  };
   const handleVolunteerButton = () => {
     setOpenVolunteerModal(true);
   };
@@ -186,10 +192,13 @@ function DrawerAppBar(props) {
               Become Volunteer
             </Button>
           </Box>
-
-          <Button variant="outlined" sx={{ margin: "0 0.5rem" }}>
+          <Button
+            variant="outlined"
+            sx={{ margin: "0 0.5rem" }}
+            onClick={handleContributeButton}>
             Contribute Now
           </Button>
+          {/* <PaypalButton /> */}
         </Toolbar>
       </AppBar>
 
